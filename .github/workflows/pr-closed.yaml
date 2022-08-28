@@ -1,13 +1,10 @@
-name: main workflow
+name: pr closed workflow
 
 on:
-  #push:
-  #  branches:
-  #    - main
-  workflow_run:
-    workflows: [pr closed workflow]
-    types:
-      - completed
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 
 jobs:
   dump-context:
