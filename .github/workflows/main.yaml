@@ -1,11 +1,11 @@
 name: main workflow
 
 on:
-  push:
-    branches:
-      - main
+  #push:
+  #  branches:
+  #    - main
   workflow_run:
-    workflows: [Run Tests]
+    workflows: [pr workflow]
     types:
       - completed
 
