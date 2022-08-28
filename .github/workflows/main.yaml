@@ -1,12 +1,16 @@
-name: dump pr context
+name: main workflow
 
 on:
   push:
     branches:
       - main
+  workflow_run:
+    workflows: [Run Tests]
+    types:
+      - completed
 
 jobs:
-  dump-pr-context:
+  dump-context:
 
     runs-on: ubuntu-latest
 

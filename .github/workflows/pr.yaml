@@ -1,4 +1,4 @@
-name: dump pr context
+name: pr workflow
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  dump-pr-context:
+  dump-context:
 
     runs-on: ubuntu-latest
 
