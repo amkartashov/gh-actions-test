@@ -1,0 +1,17 @@
+name: pr merge workflow
+
+on:
+  pull_request_target:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  dump-context:
+    if: github.event.pull_request.merged == true
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dump context
+        uses: crazy-max/ghaction-dump-context@v1
