@@ -1,13 +1,10 @@
-name: main workflow
+name: pr workflow
 
 on:
-  push:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, closed]
     branches:
       - main
-  workflow_run:
-    workflows: [Run Tests]
-    types:
-      - completed
 
 jobs:
   dump-context:
