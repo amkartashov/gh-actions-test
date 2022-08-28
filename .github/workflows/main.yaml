@@ -1,0 +1,15 @@
+name: dump pr context
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dump-pr-context:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dump context
+        uses: crazy-max/ghaction-dump-context@v1
