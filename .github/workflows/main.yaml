@@ -5,39 +5,47 @@ on:
     branches:
       - main
 
+env:
+  IMAGES_MATRIX_YAML: |
+    - image: a-image
+      gradle-project-dir: a-dir
+      application-name: a-name
+    - image: b-image
+      gradle-project-dir: b-dir
+      application-name: b-name
+    - image: c-image
+      gradle-project-dir: c-dir
+      application-name: c-name
+
 jobs:
+  createMatrix:
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: >-
+          echo "matrix=$(yq --indent=0 --output-format=json --null-input 'env(IMAGES_MATRIX_YAML)')" >> $GITHUB_OUTPUT
+
   build:
+    needs: createMatrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        images:
-          - image: a-image
-            app: a-app
-            app-path: a-path
-          - image: b-image
-            app: b-app
-            app-path: b-path
-          - image: c-image
-            app: c-app
-            app-path: c-path
+        app: ${{fromJSON(needs.createMatrix.outputs.matrix)}}
 
     steps:
       - run: |
-          echo "Building image ${{ matrix.images.image }} for app ${{ matrix.images.app }} in path ${{ matrix.images.app-path }}"
+          echo "Building image ${{ matrix.app.image }} for app ${{ matrix.app.application-name }} in path ${{ matrix.app.gradle-project-dir }}"
 
   deploy:
+    needs: [createMatrix, build]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         environment: [int, stg, prod]
-        images:
-          - image: a-image
-            app: a-app
-          - image: b-image
-            app: b-app
-          - image: c-image
-            app: c-app
+        app: ${{fromJSON(needs.createMatrix.outputs.matrix)}}
 
     steps:
       - run: |
-          echo "Deploying image ${{ matrix.images.image }} for app ${{ matrix.images.app }} into env ${{ matrix.environment }}"
+          echo "Deploying image ${{ matrix.app.image }} for app ${{ matrix.app.application-name }} into env ${{ matrix.environment }}"
