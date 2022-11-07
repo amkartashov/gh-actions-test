@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        environment: [int, stg, prod]
         images:
           - image: a-image
             app: a-app
@@ -34,13 +33,10 @@ jobs:
         images:
           - image: a-image
             app: a-app
-            app-path: a-path
           - image: b-image
             app: b-app
-            app-path: b-path
           - image: c-image
             app: c-app
-            app-path: c-path
 
     steps:
       - run: |
